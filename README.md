@@ -55,3 +55,16 @@ Finish time: 10:00 PM
 Actual time needed to complete: 6 hours
 
 ```
+
+```
+Name of feature: refactor 
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 4:00 PM
+
+Finish time: 5:00 PM
+
+Actual time needed to complete: 1 hour
+
+```
