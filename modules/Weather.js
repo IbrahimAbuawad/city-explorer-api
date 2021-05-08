@@ -9,14 +9,32 @@ class Weather {
     }
 }
 
+const inMemory = {};
+
 const weatherFunc = (req, res) => {
 
-    const weatherBit = `https://api.weatherbit.io/v2.0/forecast/daily?key=${WEATHER_BIT_KEY}&lat=${req.query.lat}&lon=${req.query.lon}`;
+    myAPIObj = {
+        key: WEATHER_BIT_KEY,
+        lat: req.query.lat,
+        lon: req.query.lon
+    }
+    const weatherBit = `https://api.weatherbit.io/v2.0/forecast/daily`;
 
-    superagent.get(weatherBit).then(dataBit => {
-        const weatherBitData = dataBit.body.data.map(element => new Weather(element));
-        res.send(weatherBitData);
-    }).catch(console.error);
+    if (inMemory[`${req.query.lat}-${req.query.lon}`]) {
+        console.log('cache hit');
+
+        res.send(inMemory[`${req.query.lat}-${req.query.lon}`]);
+
+    }
+    else {
+        console.log('cache miss');
+        superagent.get(weatherBit).query(myAPIObj).then(dataBit => {
+            const weatherBitData = dataBit.body.data.map(element => new Weather(element));
+            inMemory[`${req.query.lat}-${req.query.lon}`] = weatherBitData;
+            res.send(weatherBitData);
+        }).catch(console.error);
+    }
+
 
 }
 
