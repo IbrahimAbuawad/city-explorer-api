@@ -15,21 +15,21 @@ class Movies {
 const inMemory = {};
 
 const movieFunc = (req, res) => {
-
+let myKeyValue = req.query.query;
   myAPIObj = {
     api_key: MOVIE_KEY,
     query: req.query.query,
     limit: 8
   }
   const movie_URL = `https://api.themoviedb.org/3/search/movie`;
-if(inMemory[req.query.query]){
+if(myKeyValue in inMemory){
    res.send(inMemory[req.query.query]);
 }
 else
 superagent.get(movie_URL).query(myAPIObj).then(dataBitMovie => {
   const movieData = dataBitMovie.body.results.map(element => new Movies(element));
-  inMemory[req.query.query] = movieData;
-  res.send(inMemory[req.query.query]);
+  inMemory[myKeyValue] = movieData;
+  res.send(inMemory[myKeyValue]);
 }).catch(console.error);
 
 }
